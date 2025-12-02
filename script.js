@@ -15,26 +15,41 @@ h1.textContent = `${score}`;
 
 // Events
 
+let direction;
+
 document.addEventListener("keydown", (e) => {
+  // if (e.keyCode === 68) {
+  //   // right
+  //   snake.head.x++;
+  // }
+  // if (e.keyCode === 65) {
+  //   // left
+  //   snake.head.x--;
+  // }
+  // if (e.keyCode === 87) {
+  //   // up
+  //   snake.head.y--;
+  // }
+  // if (e.keyCode === 83) {
+  //   // down
+  //   snake.head.y++;
+  // }
   if (e.keyCode === 68) {
-    // right
-    snake.head.x++;
+    direction = "RIGHT";
   }
   if (e.keyCode === 65) {
-    // left
-    snake.head.x--;
+    direction = "LEFT";
   }
   if (e.keyCode === 87) {
-    // up
-    snake.head.y--;
+    direction = "UP";
   }
   if (e.keyCode === 83) {
-    // down
-    snake.head.y++;
+    direction = "DOWN";
   }
 });
 
 const block = 20;
+const dx = 1;
 
 const snake = {
   head: {
@@ -58,6 +73,20 @@ setInterval(game, 100);
 // functions
 
 function game() {
+  switch (direction) {
+    case "RIGHT":
+      snake.head.x++;
+      break;
+    case "LEFT":
+      snake.head.x--;
+      break;
+    case "UP":
+      snake.head.y--;
+      break;
+    case "DOWN":
+      snake.head.y++;
+      break;
+  }
   clearCanvas();
   draw();
   checkCollision();
@@ -70,6 +99,7 @@ function clearCanvas() {
 
 function draw() {
   drawHead();
+  drawTail();
   drawFood();
 
   function drawHead() {
@@ -90,9 +120,10 @@ function checkCollision() {
 
     //push coords of tail
     snake.tail.push({
-      tailX: ``, // ?
-      tailY: ``, // ?
+      tailX: food.x, // ?
+      tailY: food.y, // ?
     });
+    console.log(snake.tail);
   }
   function updateScore() {
     score++;
@@ -102,5 +133,14 @@ function checkCollision() {
   function updateFoodCords() {
     food.x = Math.floor(Math.random() * 30) + 1;
     food.y = Math.floor(Math.random() * 30) + 1;
+  }
+}
+
+function drawTail() {
+  if (snake.tail.length !== 0) {
+    snake.tail.map((e) => {
+      ctx.fillStyle = "green";
+      ctx.fillRect(e.tailX * block, e.tailY * block, block, block);
+    });
   }
 }
