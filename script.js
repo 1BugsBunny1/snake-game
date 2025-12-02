@@ -115,14 +115,15 @@ function draw() {
 
 function checkCollision() {
   if (snake.head.x === food.x && snake.head.y === food.y) {
-    updateScore();
-    updateFoodCords();
-
-    //push coords of tail
     snake.tail.push({
       tailX: food.x, // ?
       tailY: food.y, // ?
     });
+    updateScore();
+    updateFoodCords();
+
+    //push coords of tail
+
     console.log(snake.tail);
   }
   function updateScore() {
@@ -137,10 +138,35 @@ function checkCollision() {
 }
 
 function drawTail() {
+  //doesntWorkCorrectly
   if (snake.tail.length !== 0) {
-    snake.tail.map((e) => {
+    // snake.tail.map((e) => {
+    //   ctx.fillStyle = "green";
+    //   ctx.fillRect(e.tailX * block, e.tailY * block, block, block);
+    // });
+    for (let i = 0; i < snake.tail.length; i++) {
+      console.log(snake.tail[i].tailX, snake.tail[i].tailY);
       ctx.fillStyle = "green";
-      ctx.fillRect(e.tailX * block, e.tailY * block, block, block);
-    });
+      ctx.fillRect(
+        snake.tail[i].tailX * block,
+        snake.tail[i].tailY * block,
+        block,
+        block
+      );
+      switch (direction) {
+        case "RIGHT":
+          snake.tail[i].tailX++;
+          break;
+        case "LEFT":
+          snake.tail[i].tailX--;
+          break;
+        case "UP":
+          snake.tail[i].tailY--;
+          break;
+        case "DOWN":
+          snake.tail[i].tailY++;
+          break;
+      }
+    }
   }
 }
